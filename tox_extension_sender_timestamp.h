@@ -14,5 +14,5 @@ struct ToxExtensionSenderTimestamp* tox_extension_sender_timestamp_register(
 void tox_extension_sender_timestamp_free(struct ToxExtensionSenderTimestamp* extension);
 void tox_extension_sender_timestamp_negotiate(struct ToxExtensionSenderTimestamp* extension, uint32_t friend_id);
 
-void tox_extension_sender_timestamp_append(struct ToxExtensionSenderTimestamp* extension, struct ToxExtPacket* packet, uint64_t timestamp);
+void tox_extension_sender_timestamp_append(struct ToxExtensionSenderTimestamp* extension, struct ToxExtPacketList* packet, uint64_t timestamp);
 

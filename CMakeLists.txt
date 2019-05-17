@@ -1,13 +1,14 @@
 project(tox_extension_sender_timestamp)
 
-find_package(PkgConfig REQUIRED)
+find_package(ToxExt REQUIRED)
 
-pkg_search_module(TOXCORE REQUIRED toxcore)
+add_library(ToxExtensionSenderTimestamp tox_extension_sender_timestamp.c)
+target_compile_options(ToxExtensionSenderTimestamp PRIVATE -Wall -Wextra -pedantic -Werror -std=c11)
+target_link_libraries(ToxExtensionSenderTimestamp ToxExt::ToxExt)
+set_target_properties(ToxExtensionSenderTimestamp PROPERTIES PUBLIC_HEADER "tox_extension_sender_timestamp.h")
+target_include_directories(ToxExtensionSenderTimestamp PRIVATE "${TOXCORE_INCLUDEDIR}")
+set_target_properties(ToxExtensionSenderTimestamp PROPERTIES OUTPUT_NAME "tox_extension_sender_timestamp")
 
-add_library(tox_extension_sender_timestamp tox_extension_sender_timestamp.c)
-target_compile_options(tox_extension_sender_timestamp PRIVATE -Wall -Wextra -pedantic -Werror -std=c11)
-target_link_libraries(tox_extension_sender_timestamp ${TOXCORE_LIBRARIES})
-set_target_properties(tox_extension_sender_timestamp PROPERTIES PUBLIC_HEADER "tox_extension_sender_timestamp.h")
-target_include_directories(tox_extension_sender_timestamp PRIVATE "${TOXCORE_INCLUDEDIR}")
 
-install(TARGETS tox_extension_sender_timestamp ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)
+install(TARGETS ToxExtensionSenderTimestamp EXPORT ToxExtensionSenderTimestampConfig ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)
+install(EXPORT ToxExtensionSenderTimestampConfig DESTINATION lib/cmake/ToxExtensionSenderTimestamp NAMESPACE ToxExtensionSenderTimestamp::)
