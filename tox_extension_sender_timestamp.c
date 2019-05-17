@@ -20,7 +20,8 @@ struct ToxExtensionSenderTimestamp {
 // negotation callback when we've both negotiated that we have the extension
 // because at that point they don't know we can accept the message ids. We wait for
 // an enable flag from the other side to indicate that they are now embedding message ids.
-static void tox_extension_sender_timestamp_recv(uint32_t friend_id, void const* data, size_t size, void* userdata, struct ToxExtPacket* response_packet) {
+static void tox_extension_sender_timestamp_recv(struct ToxExtExtension* extension, uint32_t friend_id, void const* data, size_t size, void* userdata, struct ToxExtPacket* response_packet) {
+	(void)extension;
 	(void)response_packet;
 	struct ToxExtensionSenderTimestamp *ext_message_ids = userdata;
 
