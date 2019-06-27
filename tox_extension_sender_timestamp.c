@@ -1,4 +1,5 @@
 #include <toxext/toxext.h>
+#include <toxext/toxext_util.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,15 +31,7 @@ static void tox_extension_sender_timestamp_recv(struct ToxExtExtension* extensio
 	}
 
 	uint8_t const* data_b = data;
-	uint64_t timestamp = 0;
-	timestamp |= (uint64_t)data_b[0] << 56;
-	timestamp |= (uint64_t)data_b[1] << 48;
-	timestamp |= (uint64_t)data_b[2] << 40;
-	timestamp |= (uint64_t)data_b[3] << 32;
-	timestamp |= (uint64_t)data_b[4] << 24;
-	timestamp |= (uint64_t)data_b[5] << 16;
-	timestamp |= (uint64_t)data_b[6] << 8;
-	timestamp |= (uint64_t)data_b[7];
+	uint64_t timestamp = toxext_read_from_buf(uint64_t, data_b, 8);
 
 	ext_message_ids->cb(friend_id, timestamp, ext_message_ids->userdata);
 }
@@ -84,13 +77,6 @@ void tox_extension_sender_timestamp_negotiate(struct ToxExtensionSenderTimestamp
 
 void tox_extension_sender_timestamp_append(struct ToxExtensionSenderTimestamp* extension, struct ToxExtPacketList* packet, uint64_t timestamp) {
 	uint8_t data[8];
-	data[0] = timestamp >> 56;
-	data[1] = timestamp >> 48;
-	data[2] = timestamp >> 40;
-	data[3] = timestamp >> 32;
-	data[4] = timestamp >> 24;
-	data[5] = timestamp >> 16;
-	data[6] = timestamp >> 8;
-	data[7] = timestamp;
+	toxext_write_to_buf(timestamp, data, 8);
 	toxext_packet_append(packet, extension->extension_handle, data, 8);
 }
